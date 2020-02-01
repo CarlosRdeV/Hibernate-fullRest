@@ -96,5 +96,4 @@ public class Game {
 				+ company + ", enable=" + enable + "]";
 	}
 
-	
 }
