@@ -1,4 +1,4 @@
-package com.luv2code.testproject.videogames.controller;
+package com.luv2code.testproject.videogames.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
