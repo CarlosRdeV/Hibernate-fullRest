@@ -29,7 +29,7 @@ public class Game {
 	private String company;
 
 	@Column(name = "enable")
-	private Boolean enable;
+	private boolean enable;
 
 	public Game() {
 
@@ -82,11 +82,11 @@ public class Game {
 		this.company = company;
 	}
 
-	public Boolean getEnable() {
+	public boolean getEnable() {
 		return enable;
 	}
 
-	public void setEnable(Boolean enable) {
+	public void setEnable(boolean enable) {
 		this.enable = enable;
 	}
 

@@ -28,13 +28,13 @@ public class GameDAOImpl implements GameDAO {
 	@Override
 	@Transactional
 	public List<Game> findAll() {
+		
 		// get hibernate session
 		Session currentSession = entityManager.unwrap(Session.class);
 		
 		// create a query
 		Query<Game> theQuery =
-				currentSession.createQuery("from Juego",Game.class);
-		
+				currentSession.createQuery("from Game", Game.class);
 		// execute query and get the result list
 		List<Game> theGames = theQuery.getResultList();
 		
