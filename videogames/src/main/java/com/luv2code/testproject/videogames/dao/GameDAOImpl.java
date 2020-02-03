@@ -42,4 +42,47 @@ public class GameDAOImpl implements GameDAO {
 		return theGames;
 	}
 
+	@Override
+	@Transactional
+	public Game findById(int theId) {
+		
+		// get hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+		
+		// create a query
+		Game theGame = currentSession.get(Game.class, theId);
+		
+		// return list
+		return theGame;
+	}
+
+	@Override
+	@Transactional
+	public void save(Game theGame) {
+
+		// get hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+		
+		// create a query
+		currentSession.saveOrUpdate(theGame);
+	}
+
+	@Override
+	@Transactional
+	public void deleteById(int theId) {
+		
+		// get hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+		
+		// create a query
+		Query theQuery =
+				currentSession.createQuery("delete from Game where id=:gameId");
+		
+		theQuery.setParameter("gameId", theId);
+		
+		// execute query and get the result list
+		theQuery.executeUpdate();
+	
+	}
+
 }
