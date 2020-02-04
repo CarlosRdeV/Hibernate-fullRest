@@ -8,41 +8,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.luv2code.testproject.videogames.entity.Genre;
+import com.luv2code.testproject.videogames.entity.Platform;
 
 @Repository
-public class GenreDAOImple implements GenreDAO {
+public class PlatformDAOImpl implements PlatformDAO {
 
 	private EntityManager entityManager;
 
 	@Autowired
-	public GenreDAOImple(EntityManager theEntityManager) {
+	public PlatformDAOImpl(EntityManager theEntityManager) {
 		entityManager = theEntityManager;
 	}
 
 	@Override
 	@Transactional
-	public void save(Genre theGenre) {
+	public void save(Platform thePlatform) {
 
 		// get hibernate session
 		Session currentSession = entityManager.unwrap(Session.class);
 
 		Query theQuery = null;
 
-		if (theGenre.getId() == 0) {
+		if (thePlatform.getId() == 0) {
 
 			// create a query
-			theQuery = currentSession.createSQLQuery("INSERT INTO GENERO (GENERO) VALUES (:genero)");
+			theQuery = currentSession.createSQLQuery("INSERT INTO PLATAFORMA (PLATAFORMA) VALUES (:plataforma)");
 
 			// set parameters
-			theQuery.setParameter("genero", theGenre.getGenero());
+			theQuery.setParameter("plataforma", thePlatform.getPlataforma());
 
 		} else {
 
-			theQuery = currentSession.createSQLQuery("UPDATE GENERO SET GENERO=:genero where id=:genreId");
+			theQuery = currentSession.createSQLQuery("UPDATE PLATAFORMA SET PLATAFORMA=:plataforma where id=:plataformaId");
 
-			theQuery.setParameter("genreId", theGenre.getId());
-			theQuery.setParameter("genero", theGenre.getGenero());
+			theQuery.setParameter("plataformaId", thePlatform.getId());
+			theQuery.setParameter("plataforma", thePlatform.getPlataforma());
 		}
 
 		// execute query

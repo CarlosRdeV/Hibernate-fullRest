@@ -14,4 +14,8 @@ public interface GameDAO {
 	
 	public void deleteById(int theId);
 	
+	public void addGenre(int gameId, int genreId);
+	
+	public void addPlatform(int gameId, int platformId);
+	
 }

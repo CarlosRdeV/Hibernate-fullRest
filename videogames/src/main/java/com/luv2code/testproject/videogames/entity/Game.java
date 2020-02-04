@@ -1,10 +1,18 @@
 package com.luv2code.testproject.videogames.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -30,6 +38,26 @@ public class Game {
 
 	@Column(name = "enable")
 	private boolean enable;
+	
+	@ManyToMany( fetch = FetchType.LAZY ,
+			cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+				CascadeType.DETACH, CascadeType.REFRESH} )
+	@JoinTable(
+			name = "juego_genero",
+			joinColumns = @JoinColumn(name = "juego_id"),
+			inverseJoinColumns = @JoinColumn(name = "genero_id")
+			)
+	private List<Genre> genres;
+	
+	@ManyToMany( fetch = FetchType.LAZY ,
+			cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+				CascadeType.DETACH, CascadeType.REFRESH} )
+	@JoinTable(
+			name = "juego_plataforma",
+			joinColumns = @JoinColumn(name = "juego_id"),
+			inverseJoinColumns = @JoinColumn(name = "plataforma_id")
+			)
+	private List<Platform> platforms;
 
 	public Game() {
 
@@ -89,11 +117,49 @@ public class Game {
 	public void setEnable(boolean enable) {
 		this.enable = enable;
 	}
+	
+	public List<Genre> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<Genre> genres) {
+		this.genres = genres;
+	}
+	
+	
+
+	public List<Platform> getPlatforms() {
+		return platforms;
+	}
+
+	public void setPlatforms(List<Platform> platforms) {
+		this.platforms = platforms;
+	}
+
+	public void addGenre(Genre theGenre) {
+		
+		if(genres == null) {
+			genres = new ArrayList<>();	
+		}
+		
+		genres.add(theGenre);
+	}
+	
+	public void addPlatform(Platform thePlatform) {
+		
+		if(platforms == null) {
+			platforms = new ArrayList<>();	
+		}
+		
+		platforms.add(thePlatform);
+	}
 
 	@Override
 	public String toString() {
 		return "Game [id=" + id + ", name=" + name + ", gameYear=" + gameYear + ", esrb=" + esrb + ", company="
 				+ company + ", enable=" + enable + "]";
 	}
+	
+	
 
 }

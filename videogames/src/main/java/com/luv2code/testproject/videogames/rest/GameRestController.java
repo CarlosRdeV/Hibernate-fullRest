@@ -78,5 +78,17 @@ public class GameRestController {
 		}
 		
 	}
+	
+	// expose POST "/games/genres/{gameId}/{genreId}" - return a existing game
+	@PostMapping("/games/genres/{gameId}/{genreId}")
+	public void addGenre(@PathVariable int gameId, @PathVariable int genreId) {
+		gameDAO.addGenre(gameId, genreId);
+	}
+	
+	// expose POST "/games/genres/{gameId}/{genreId}" - return a existing game
+	@PostMapping("/games/platforms/{gameId}/{platformId}")
+	public void addPlatform(@PathVariable int gameId, @PathVariable int platformId) {
+		gameDAO.addPlatform(gameId, platformId);
+	}
 
 }

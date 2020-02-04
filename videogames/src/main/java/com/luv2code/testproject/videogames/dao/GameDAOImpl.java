@@ -51,7 +51,8 @@ public class GameDAOImpl implements GameDAO {
 		
 		// create a query
 		Query<Game> theQuery =
-				currentSession.createQuery("from Game where id=:gameId", Game.class);
+				currentSession.createSQLQuery("SELECT * FROM JUEGO WHERE id=:gameId");
+		//"from Game where id=:gameId", Game.class
 		//currentSession.createQuery("select g from Game g where g.id=:gameId", Game.class);
 		
 		theQuery.setParameter("gameId", theId);
@@ -126,6 +127,46 @@ public class GameDAOImpl implements GameDAO {
 		// execute query and get the result list
 		theQuery.executeUpdate();
 	
+	}
+
+	@Override
+	@Transactional
+	public void addGenre(int gameId, int genreId) {
+
+		// get hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+			
+			// create a query
+		Query theQuery = currentSession.createSQLQuery(
+					"INSERT INTO JUEGO_GENERO (JUEGO_ID, GENERO_ID) VALUES "
+					+ "(:juegoId, :generoId)");
+			
+			// set parameters
+			theQuery.setParameter("juegoId", gameId);
+			theQuery.setParameter("generoId", genreId);
+			
+			theQuery.executeUpdate();
+
+		
+	}
+
+	@Override
+	@Transactional
+	public void addPlatform(int gameId, int platformId) {
+
+		// get hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+			
+			// create a query
+		Query theQuery = currentSession.createSQLQuery(
+					"INSERT INTO JUEGO_PLATAFORMA (JUEGO_ID, PLATAFORMA_ID) VALUES "
+					+ "(:juegoId, :plataformaId)");
+			
+			// set parameters
+			theQuery.setParameter("juegoId", gameId);
+			theQuery.setParameter("plataformaId", platformId);
+			
+			theQuery.executeUpdate();
 	}
 
 }
