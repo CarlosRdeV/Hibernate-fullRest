@@ -50,7 +50,15 @@ public class GameDAOImpl implements GameDAO {
 		Session currentSession = entityManager.unwrap(Session.class);
 		
 		// create a query
-		Game theGame = currentSession.get(Game.class, theId);
+		Query<Game> theQuery =
+				currentSession.createQuery("from Game where id=:gameId", Game.class);
+		//currentSession.createQuery("select g from Game g where g.id=:gameId", Game.class);
+		
+		theQuery.setParameter("gameId", theId);
+
+		Game theGame = theQuery.getSingleResult();
+
+		//Game theGame = currentSession.get(Game.class, theId);
 		
 		// return list
 		return theGame;
@@ -63,9 +71,44 @@ public class GameDAOImpl implements GameDAO {
 		// get hibernate session
 		Session currentSession = entityManager.unwrap(Session.class);
 		
-		// create a query
-		currentSession.saveOrUpdate(theGame);
+		Query theQuery = null;
+		
+		if(theGame.getId()==0) {
+			
+			// create a query
+			theQuery = currentSession.createSQLQuery(
+					"INSERT INTO JUEGO (NOMBRE, GAME_YEAR, ESRB, COMPANY, ENABLE) VALUES "
+					+ "(:nombre, :gameYear, :esrb, :company, :enable )");
+			
+			// set parameters
+			theQuery.setParameter("nombre", theGame.getName());
+			theQuery.setParameter("gameYear", theGame.getGameYear());
+			theQuery.setParameter("esrb", theGame.getEsrb());
+			theQuery.setParameter("company", theGame.getCompany());
+			theQuery.setParameter("enable", true);
+			
+		}else {
+			
+			theQuery =
+					currentSession.createSQLQuery(
+						"UPDATE JUEGO SET NOMBRE=:nombre, GAME_YEAR=:gameYear, ESRB=:esrb, "
+						+ "COMPANY=:company where id=:gameId");
+			
+			theQuery.setParameter("gameId", theGame.getId());
+			theQuery.setParameter("nombre", theGame.getName());
+			theQuery.setParameter("gameYear", theGame.getGameYear());
+			theQuery.setParameter("esrb", theGame.getEsrb());
+			theQuery.setParameter("company", theGame.getCompany());
+			
+		}
+
+		// execute query
+		theQuery.executeUpdate();
+
+		
 	}
+	
+	
 
 	@Override
 	@Transactional
@@ -76,7 +119,7 @@ public class GameDAOImpl implements GameDAO {
 		
 		// create a query
 		Query theQuery =
-				currentSession.createQuery("delete from Game where id=:gameId");
+				currentSession.createSQLQuery("UPDATE JUEGO SET ENABLE = FALSE where id=:gameId");
 		
 		theQuery.setParameter("gameId", theId);
 		
